@@ -1,3 +1,58 @@
-<h1>Hello World</h1>
-
-<a href="/files/public">Get Files</a>
+<template>
+        <div class="login" >
+            <div class="form">
+                <h1>Login</h1>
+                <form method="POST" action="/login" >
+                    <label for="username">Username:</label><br />
+                    <input type="text" name="username" placeholder="Username..." /><br />
+                    <label for="password">Password:</label><br />
+                    <input type="password" name="password" placeholder="Password..." /><br />
+                    <input type="button" value="Submit" v-on:click="login()">
+                </form>
+            </div>
+        </div>
+    </template>
+    
+    <script>
+        
+    </script>
+    
+    <style scoped>
+    .login{
+        background-color: lightblue ;
+        width: 100vw;
+        height: 100vh;
+    }
+    .form{
+        padding: 20px;
+        background: white;
+        border: solid gray 1px;
+        border-radius: 7px; 
+        display: inline-block;
+        margin-top: 15vh;
+    }
+    form{
+        align-items: flex-start;
+    }
+    input[type=button], input[type=submit]{
+        padding: 10px 20px 10px 20px;
+        border: 1px solid #bbb;
+        border-radius: 5px;
+    }
+    input[type=text], input[type=number], input[type=password], select {
+        width: 70vw;
+        min-width: 80px;
+        max-width: 300px;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border: none;
+        background: #f1f1f1;
+    }
+    
+    input[type=text]:focus, input[type=password]:focus, input[type=number]:focus {
+        background-color: #ddd;
+        outline: none;
+    }
+    </style>
+    

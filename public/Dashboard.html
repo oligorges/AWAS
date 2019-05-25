@@ -1,0 +1,87 @@
+<html>  
+    <head>
+        <title>Dashboard</title>
+        <script type="application/javascript">
+            const colors = ['red', 'blue', 'green']
+            const loadAll = ()=>{
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = ()=>{
+                    if(xhr.readyState == 4){
+                        JSON.parse(xhr.response).forEach(element => {
+                            var color = colors[Math.floor(Math.random()*colors.length)]; 
+                            document.getElementById('main').innerHTML = 
+                            `<div class="box ${color}">
+                                ${element}
+                                <br/><hr/>
+                                From ${user}
+                                <br/>
+                                Desc
+                            </div>`
+                        });
+                    }
+                }
+                xhr.open('GET', '/allfiles')
+                xhr.send()
+            }
+            const loadMy = ()=>{
+                document.getElementById('main').innerHTML = ""
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = ()=>{
+                    if(xhr.readyState == 4){
+                        JSON.parse(xhr.response).forEach(element => {
+                            var color = colors[Math.floor(Math.random()*colors.length)]; 
+                            document.getElementById('main').innerHTML += 
+                            `<div class="box ${color}">
+                                ${element}
+                            </div>`
+                        });
+                        
+                    }
+                }
+                xhr.open('GET', '/myfiles?username=Oli')
+                xhr.send()
+            }
+        
+            window.onload = loadAll()
+        </script>
+        <style>
+            .red{
+                background-color: lightcoral;
+            }
+            .blue{
+                background-color: aqua;
+            }
+            .green{
+                background-color: aquamarine;
+            }
+            .box{
+                border: solid 1px gray;
+                border-radius: 3px;
+                width: 40vw;
+                height: auto;
+                min-height: 5vh;
+                text-align: center;
+            }
+        
+        </style>
+    </head>
+    <body>
+        <h1>Hello World</h1>
+
+        <a href="/files/public">Get Files</a>
+        <button onclick="loadAll()">All</button>
+        <button onclick="loadMy()">My</button>
+        <form action="/logout">
+            <input type="submit" value="Logout" />
+        </form>
+
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <input name="doc" type="file" />
+            <input name="name" type="text" placeholder="Name" />
+            <input name="desc" type="text" placeholder="Description" />
+            <input name="upload" type="submit" value="Upload" />
+        </form>
+        <div id="main"></div>
+
+    </body>
+</html>
