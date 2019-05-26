@@ -1,0 +1,221 @@
+<html>  
+    <head>
+        <title>Dashboard</title>
+        <script type="application/javascript">
+            const colors = ['red', 'blue', 'green']
+            const loadAll = ()=>{
+                document.getElementById('main').innerHTML = "<h1>Files</h1>"
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = ()=>{
+                    if(xhr.readyState == 4){
+                        JSON.parse(xhr.response).forEach(element => {
+                            console.log(element)
+                            var color = colors[Math.floor(Math.random()*colors.length)]; 
+                            document.getElementById('main').innerHTML += 
+                            `<div class="box ${color}">
+                                ${element.name}
+                                <br/><hr/>
+                                From ${element.user}
+                                <br/>
+                                ${element.desc}
+                                <br/>
+                                <form action="/download" method="POST"><input name="path" value="${element.path}" hidden/>
+                                    <input class="download" type="submit" value="Download" />
+                                </form>
+                            </div>`
+                        });
+                    }
+                }
+                xhr.open('GET', '/allfiles')
+                xhr.send()
+            }
+            const loadMy = ()=>{
+                document.getElementById('main').innerHTML = "<h1>My Files</h1>"
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = ()=>{
+                    if(xhr.readyState == 4){
+                        JSON.parse(xhr.response).forEach(element => {
+                            var color = colors[Math.floor(Math.random()*colors.length)]; 
+                            document.getElementById('main').innerHTML += 
+                            `<div class="box ${color}">
+                                ${element}
+                                <form action="/file" method="POST"><input name="path" value="${element.path}" hidden/>
+                                    <input class="download" type="submit" value="Delete" />
+                                </form>
+                            </div>`
+                        });
+                        
+                    }
+                }
+                xhr.open('GET', '/myfiles')
+                xhr.send()
+            }
+
+            const upload = ()=>{
+                document.getElementById('main').innerHTML = `
+                    <h1>Upload a new File</h1>
+                    <form method="POST" action="/upload" enctype="multipart/form-data">
+                        <label for="doc">File:</label><br />
+                        <input name="doc" type="file" /><br />
+                        <label for="name">Name:</label><br />
+                        <input name="name" type="text" placeholder="Name" maxlength="50"/><br />
+                        <label for="desc">Description:</label><br />
+                        <input name="desc" type="text" placeholder="Description" /><br />
+                        <input name="upload" type="submit" value="Upload" />
+                    </form>`
+            }
+
+            const logout = ()=>{
+                let xhr = new XMLHttpRequest()
+                xhr.open('GET', '/logout')
+                xhr.send()
+                window.location.href = window.location.origin
+            }   
+            
+            const manageUsers = ()=>{
+                document.getElementById('main').innerHTML = "<h1>Manage Users</h1>"
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = ()=>{
+                    if(xhr.readyState == 4){
+                        JSON.parse(xhr.response).forEach(element => {
+                            var color = colors[Math.floor(Math.random()*colors.length)]; 
+                            document.getElementById('main').innerHTML += 
+                            `<div class="box ${color}">
+                                ${element.username}
+                                <form action="/user/${element.username}" method="POST">
+                                    <input class="download" type="submit" value="Delete" />
+                                </form>
+                            </div>`
+                        });
+                        
+                    }
+                }
+                xhr.open('GET', '/users')
+                xhr.send()
+            }
+
+            const manageFiles = ()=>{
+                document.getElementById('main').innerHTML = "<h1>Manage Files</h1>"
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = ()=>{
+                    if(xhr.readyState == 4){
+                        JSON.parse(xhr.response).forEach(element => {
+                            var color = colors[Math.floor(Math.random()*colors.length)]; 
+                            document.getElementById('main').innerHTML += 
+                            `<div class="box ${color}">
+                                ${element.name}
+                                <form action="/file" method="POST"><input name="path" value="${element.path}" hidden/>
+                                    <input class="download" type="submit" value="Delete" />
+                                </form>
+                            </div>`
+                        });
+                        
+                    }
+                }
+                xhr.open('GET', '/allfiles')
+                xhr.send()
+            }
+
+            window.onload = ()=>{
+                loadAll()
+                var admin = document.cookie
+                console.log(admin)
+                if(admin){
+                    document.getElementById('nav').innerHTML +=    `<div class="nav"><b>Admin</b></div>
+                                                                    <div class="nav hov" onclick="manageFiles()">Files</div>
+                                                                    <div class="nav hov" onclick="manageUsers()">Users</div>`
+                }
+            }
+        </script>
+        <style>
+            body{
+                margin: 0 auto;
+            }
+            .red{
+                background-color: lightcoral;
+            }
+            .blue{
+                background-color: aqua;
+            }
+            .green{
+                background-color: aquamarine;
+            }
+            .box{
+                border: solid 1px gray;
+                border-radius: 3px;
+                width: 40vw;
+                height: auto;
+                min-height: 5vh;
+                text-align: center;
+                padding: 7px;
+                margin: 10px;
+            }
+            #nav{
+                margin-top: 30vh;
+            }
+            .nav{
+                width: 10vw;
+                padding: 2vh 5vw 2vh 5vw;
+            }
+            .hov:hover{
+                background-color: aqua
+            }
+            #left{
+                width: 20vw;
+                height: 100vh;
+                background-color: azure;
+                border-right: solid lightgray 1px;
+                position: absolute;
+            }
+            #right{
+                width: 80vw;
+                height: 100vh;
+                margin-left: 30vw;
+                position: absolute;
+                float: left;
+            }
+            .download{
+                margin-top: 5px;
+                padding: 5px;
+            }
+            input[type=button], input[type=submit]{
+                padding: 10px 20px 10px 20px;
+                border: 1px solid #bbb;
+                border-radius: 5px;
+            }
+            input[type=text], input[type=number], input[type=password], select {
+                width: 70vw;
+                min-width: 80px;
+                max-width: 300px;
+                padding: 15px;
+                margin: 5px 0 22px 0;
+                display: inline-block;
+                border: none;
+                background: #f1f1f1;
+            }
+            
+            input[type=text]:focus, input[type=password]:focus, input[type=number]:focus {
+                background-color: #ddd;
+                outline: none;
+            }
+        
+        </style>
+    </head>
+    <body>
+       
+        <div id="left">
+            <div id="nav">
+                <div class="nav hov" onclick="loadAll()">All Files</div>
+                <div class="nav hov" onclick="loadMy()">My Files</div>
+                <div class="nav hov" onclick="upload()">Upload File</div>
+                <div class="nav hov" onclick="logout()">Logout</div> 
+            </div>
+            
+        </div>
+        
+        <div id="right">
+            <div id="main"></div>
+        </div>
+
+    </body>
+</html>

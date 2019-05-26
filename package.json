@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Dragonil/AWAS#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
     "exec": "^0.2.1",
     "express": "^4.17.0",
     "express-session": "^1.16.1",
