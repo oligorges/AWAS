@@ -2,7 +2,7 @@
 
 Our Project is a Bulletin Board where Users can upload files with a comment to share it with other users.
 The files will be saved in a folder and can be accessed with the file name. 
-There Is also a Admin who has the rights to list and delete files
+There is also a Admin who has the rights to list and delete files and users
 
 ## Issues
 - Only one Database table for any kind of informations
@@ -11,5 +11,20 @@ There Is also a Admin who has the rights to list and delete files
 - Bad session management
 - Endpoint that provides direct acces to a terminal / Filesystem
 - Bulletin Board that has no filter for JS
+
+## Init
+
+> the application needs a local mongodb installation
+> https://docs.mongodb.com/manual/installation/
+
+```bash
+npm i
+```
+
+## run the Project
+```bash
+npm start
+```
+
 
 
